@@ -9,6 +9,7 @@ class Membre {
   Membre({required this.reference, required this.id, required this.map});
 
   String get name => map[nameKey] ?? '';
+  String get memberId => map[memberIdKey] ?? '';
   String get surname => map[surnameKey] ?? '';
   String get profilePicture => map[profilePictureKey] ?? '';
   String get coverPicture => map[coverPictureKey] ?? '';

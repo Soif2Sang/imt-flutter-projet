@@ -28,14 +28,13 @@ class _PageProfilState extends State<PageProfil> {
           final docs = snapshot.data!.docs;
           final int length = docs.length;
           final bool isMe = ServiceAuthentification().isMe(widget.member.id);
-          final int indexToAdd = isMe ? 2 : 1;
+          final int indexToAdd = 1;
 
           return ListView.builder(
             itemCount: length + indexToAdd,
             itemBuilder: (context, index) {
               if (index == 0) {
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Couverture avec bouton de changement
                     Stack(
@@ -108,8 +107,9 @@ class _PageProfilState extends State<PageProfil> {
                       ),
                   ],
                 );
-              } else {
+              } else if (index < length + indexToAdd) {
                 // Affichage des posts
+                print(index - indexToAdd);
                 final postDoc = docs[index - indexToAdd];
                 final post = Post(
                   reference: postDoc.reference,
@@ -117,6 +117,9 @@ class _PageProfilState extends State<PageProfil> {
                   map: postDoc.data() as Map<String, dynamic>,
                 );
                 return WidgetPost(post: post);
+              } else {
+                // This case handles the case where index is out of bounds.
+                return const SizedBox(); // This prevents invalid index access.
               }
             },
           );
@@ -126,4 +129,5 @@ class _PageProfilState extends State<PageProfil> {
       },
     );
   }
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'page_navigation.dart';
 import '../services_firebase/service_authentification.dart';
 
 class PageAuthentification extends StatefulWidget {
@@ -38,7 +39,7 @@ class _PageAuthentificationState extends State<PageAuthentification> {
     });
   }
 
-  Future<void> _handleHauth() async {
+  Future<void> _handleAuth() async {
     String result = '';
     if (accountExists) {
       result = await authService.signIn(
@@ -54,10 +55,20 @@ class _PageAuthentificationState extends State<PageAuthentification> {
       );
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(result.isEmpty ? 'Succès' : result)),
-    );
+    if (result.isEmpty) {
+      // Authentication or account creation successful, navigate to PageNavigation
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PageNavigation()),
+      );
+    } else {
+      // Show error message if there is a result (error)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result)),
+      );
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +119,7 @@ class _PageAuthentificationState extends State<PageAuthentification> {
                       ],
                       const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: _handleHauth,
+                        onPressed: _handleAuth,
                         child: Text(accountExists ? 'Se connecter' : 'Créer un compte'),
                       ),
                     ],

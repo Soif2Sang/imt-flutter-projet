@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chti_face_bouc/services_firebase/service_authentification.dart';
+import 'service_authentification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import '../modeles/constantes.dart';
@@ -24,8 +24,8 @@ class ServiceFirestore {
   }
 
   // Mettre à jour un membre
-  void updateMember({required String id, required Map<String, dynamic> data}) {
-    firestoreMember.doc(id).update(data);
+  updateMember({required String id, required Map<String, dynamic> data}) {
+    return firestoreMember.doc(id).update(data);
   }
 
   // Stockage et mise à jour d'une image
@@ -99,6 +99,12 @@ class ServiceFirestore {
     };
 
     post.reference.collection(commentCollectionKey).doc().set(map);
+
+    sendNotification(
+      to: post.map[memberIdKey],
+      text: "commented on your post.",
+      postID: post.id,
+    );
   }
 
   Stream<QuerySnapshot> postComment(String postId) {
@@ -118,6 +124,9 @@ class ServiceFirestore {
     if (from == null) return;
 
     final route = firestoreMember.doc(to).collection(notificationCollectionKey);
+
+    print('sendNotification');
+
     route.doc().set({
       dateKey: DateTime.now().millisecondsSinceEpoch,
       isAsReadKey: false,
@@ -132,7 +141,7 @@ class ServiceFirestore {
   }
 
   notificationForUser(String id) {
-    firestoreMember.doc(id).collection(notificationCollectionKey).orderBy(dateKey, descending: true).snapshots();
+    return firestoreMember.doc(id).collection(notificationCollectionKey).orderBy(dateKey, descending: true).snapshots();
   }
 
   Stream<DocumentSnapshot> specificMember(String memberId) {

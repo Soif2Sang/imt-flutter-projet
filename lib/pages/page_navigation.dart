@@ -1,14 +1,16 @@
-import 'package:chti_face_bouc/pages/page_accueil.dart';
-import 'package:chti_face_bouc/pages/page_ecrire_post.dart';
-import 'package:chti_face_bouc/pages/page_membre.dart';
-import 'package:chti_face_bouc/pages/page_profil.dart';
+import 'page_notification.dart';
+
+import 'page_accueil.dart';
+import 'page_ecrire_post.dart';
+import 'page_membre.dart';
+import 'page_profil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../modeles/membre.dart';
 import '../services_firebase/service_authentification.dart';
 import '../services_firebase/service_firestore.dart';
-import '../widget_vide.dart';
+import '../widgets/widget_vide.dart';
 
 class PageNavigation extends StatefulWidget {
   const PageNavigation({super.key});
@@ -43,7 +45,7 @@ class _PageNavigationState extends State<PageNavigation> {
             Center(child: PageAccueil(title: 'Accueil')),
             Center(child: PageMembres()),
             Center(child: PageEcrirePost(member: member, newSelection: (val) => setState(() => index = val))),
-            Center(child: Text("Notifications")),
+            Center(child: PageNotif(member: member)),
             Center(child: PageProfil(member: member)),
           ];
 

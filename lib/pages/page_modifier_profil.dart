@@ -52,7 +52,25 @@ class _ModifierProfilState extends State<ModifierProfil> {
     }
 
     if (map.isNotEmpty) {
-      ServiceFirestore().updateMember(id: member.id, data: map);
+      ServiceFirestore().updateMember(id: member.id, data: map).then((_) {
+        // Show success banner
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Member details updated successfully!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }).catchError((error) {
+        // Show error banner if update fails
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update member details. Please try again.'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      });
     }
   }
 
@@ -115,7 +133,7 @@ class _ModifierProfilState extends State<ModifierProfil> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _onLogout,
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red[200]),
               child: const Text('Se déconnecter'),
             ),
           ],

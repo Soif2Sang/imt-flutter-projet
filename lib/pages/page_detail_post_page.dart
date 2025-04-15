@@ -43,7 +43,6 @@ class _PageDetailPostState extends State<PageDetailPost> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            WidgetPost(post: widget.post),
             const SizedBox(height: 10),
             Row(
               children: [

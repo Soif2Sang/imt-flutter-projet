@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAC1RQBBs3LzSM_Jn5_5SbK4dIF4PdFgfk',
-    appId: '1:978070940690:android:a0e41969329ad2bdc5bccb',
+    appId: '1:978070940690:android:1504c29c1f038a20c5bccb',
     messagingSenderId: '978070940690',
     projectId: 'chti-face-bouc-17027',
     storageBucket: 'chti-face-bouc-17027.firebasestorage.app',
@@ -60,29 +60,30 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDsdZldRPlQRVvyynWHjNdIfwCJ_gF5XII',
-    appId: '1:978070940690:ios:3b9a92ded0b9b5fbc5bccb',
+    appId: '1:978070940690:ios:ea35a25bc73f84ffc5bccb',
     messagingSenderId: '978070940690',
     projectId: 'chti-face-bouc-17027',
     storageBucket: 'chti-face-bouc-17027.firebasestorage.app',
-    iosBundleId: 'com.example.chtiFaceBouc',
+    iosBundleId: 'com.example.projet2',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDsdZldRPlQRVvyynWHjNdIfwCJ_gF5XII',
-    appId: '1:978070940690:ios:3b9a92ded0b9b5fbc5bccb',
+    appId: '1:978070940690:ios:ea35a25bc73f84ffc5bccb',
     messagingSenderId: '978070940690',
     projectId: 'chti-face-bouc-17027',
     storageBucket: 'chti-face-bouc-17027.firebasestorage.app',
-    iosBundleId: 'com.example.chtiFaceBouc',
+    iosBundleId: 'com.example.projet2',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyD70m9Nu8OKB03PsAWEbBmuGGlR69mi31o',
-    appId: '1:978070940690:web:845459541d808a8bc5bccb',
+    appId: '1:978070940690:web:c2a7b7b7d920cd85c5bccb',
     messagingSenderId: '978070940690',
     projectId: 'chti-face-bouc-17027',
     authDomain: 'chti-face-bouc-17027.firebaseapp.com',
     storageBucket: 'chti-face-bouc-17027.firebasestorage.app',
-    measurementId: 'G-TTZ380NJ87',
+    measurementId: 'G-7EWK8BQREX',
   );
+
 }

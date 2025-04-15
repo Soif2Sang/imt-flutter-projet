@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../modeles/post.dart';
 import '../services_firebase/service_firestore.dart';
-import '../widget_vide.dart';
+import '../widgets/widget_vide.dart';
 import '../widgets/post_widget.dart';
 
 class PageAccueil extends StatefulWidget {
@@ -30,6 +30,7 @@ class _PageAccueilState extends State<PageAccueil> {
           stream: ServiceFirestore().allPosts(),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot> snapshot) {
+            print(snapshot);
             if (snapshot.hasData) {
               final docs = snapshot.data!.docs;
 
@@ -39,12 +40,15 @@ class _PageAccueilState extends State<PageAccueil> {
                 itemCount: docs.length,
                 itemBuilder: (context, index) {
                   final doc = docs[index];
+                  print('ici');
+                  print(doc);
+                  print(doc.data());
                   final post = Post(
                     reference: doc.reference,
                     id: doc.id,
                     map: doc.data() as Map<String, dynamic>,
                   );
-
+                  print(doc);
                   return WidgetPost(post: post);
                 },
               );

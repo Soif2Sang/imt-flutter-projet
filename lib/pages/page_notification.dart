@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../modeles/membre.dart';
 import '../modeles/notification.dart';
 import '../services_firebase/service_firestore.dart';
-import '../widget_vide.dart';
+import '../widgets/widget_vide.dart';
 import '../widgets/widget_notif.dart';
 
 class PageNotif extends StatefulWidget {
@@ -24,6 +24,8 @@ class _PageNotifState extends State<PageNotif> {
       body: StreamBuilder<QuerySnapshot>(
         stream: ServiceFirestore().notificationForUser(widget.member.id),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          print('snapshot.hasData ${snapshot.hasData}');
+
           if (snapshot.hasData) {
             final docs = snapshot.data!.docs;
 

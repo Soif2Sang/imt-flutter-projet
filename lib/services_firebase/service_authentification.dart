@@ -1,4 +1,4 @@
-import 'package:chti_face_bouc/services_firebase/service_firestore.dart';
+import 'service_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ServiceAuthentification {
@@ -7,8 +7,14 @@ class ServiceAuthentification {
 
   // Connecter à Firebase
   Future<String> signIn({required String email, required String password}) async {
-    String result = "";
-    return result;
+    try {
+      await instance.signInWithEmailAndPassword(email: email, password: password);
+      return '';  // Successful sign-in
+    } on FirebaseAuthException catch (e) {
+      return e.message ?? "Erreur lors de la connexion.";
+    } catch (e) {
+      return "Erreur inattendue : $e";
+    }
   }
 
   // Créer un compte sur Firebase
@@ -34,6 +40,7 @@ class ServiceAuthentification {
         data: {
           'surname': surname,
           'name': name,
+          'memberID': uid,
           'description': '',
           'profilePicture': '',
           'coverPicture': '',
@@ -51,8 +58,9 @@ class ServiceAuthentification {
 
   // Déconnecter de Firebase
   Future<bool> signOut() async {
-    bool result = false;
-    return result;
+    instance.signOut();
+
+    return true;
   }
 
   // Récupérer l'id unique de l'utilisateur
@@ -60,7 +68,6 @@ class ServiceAuthentification {
 
   // Voir si vous êtes l'utilisateur
   bool isMe(String profileId) {
-    bool result = false;
-    return result;
+    return myId == profileId;
   }
 }

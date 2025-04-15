@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../modeles/membre.dart';
 import '../services_firebase/service_firestore.dart';
-import '../widget_vide.dart';
+import '../widgets/widget_vide.dart';
 import 'page_profil.dart';
 
 class PageMembres extends StatefulWidget {
@@ -37,11 +37,20 @@ class _PageMembresState extends State<PageMembres> {
               return ListTile(
                 title: Text(member.fullName),
                 subtitle: Text(member.description),
+                // Inside PageMembres -> itemBuilder -> ListTile -> onTap:
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => PageProfil(member: member),
+                      // Wrap PageProfil in a Scaffold here
+                      builder: (_) => Scaffold(
+                        appBar: AppBar(
+                          // Add an AppBar for back navigation and context
+                          title: Text(member.fullName),
+                        ),
+                        // Use the PageProfil as the body of this new Scaffold
+                        body: PageProfil(member: member),
+                      ),
                     ),
                   );
                 },
