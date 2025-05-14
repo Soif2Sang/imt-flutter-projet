@@ -1,3 +1,5 @@
+import 'dart:io'; // Import for File
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../modeles/membre.dart';
@@ -48,6 +50,12 @@ class _PageEcrirePostState extends State<PageEcrirePost> {
       image: xFile,
     );
 
+    // Clear the fields after sending (optional, but good UX)
+    textController.clear();
+    setState(() {
+      xFile = null;
+    });
+
     widget.newSelection(0); // Redirige vers la page Accueil
   }
 
@@ -56,17 +64,23 @@ class _PageEcrirePostState extends State<PageEcrirePost> {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Card(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // Align card content to start
                 children: [
                   Row(
                     children: const [
                       Icon(Icons.border_color),
                       SizedBox(width: 8),
-                      Text("Écrire un post"),
+                      Text(
+                        "Écrire un post",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), // Optional styling
+                      ),
                     ],
                   ),
                   const Divider(),
@@ -79,17 +93,41 @@ class _PageEcrirePostState extends State<PageEcrirePost> {
                     ),
                   ),
                   const SizedBox(height: 12),
+
+                  // Display the selected image if available
+                  if (xFile != null) ...[
+                    Image.file(
+                      File(xFile!.path),
+                      fit: BoxFit.cover,
+                      height: 200,
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
                         icon: const Icon(Icons.photo),
+                        tooltip: 'Choisir depuis la galerie',
                         onPressed: () => _takePic(ImageSource.gallery),
                       ),
                       IconButton(
                         icon: const Icon(Icons.camera_alt),
+                        tooltip: 'Prendre une photo',
                         onPressed: () => _takePic(ImageSource.camera),
                       ),
+                      // Optional: Add a button to clear the selected image
+                      if (xFile != null)
+                        IconButton(
+                          icon: const Icon(Icons.clear),
+                          tooltip: 'Supprimer l\'image',
+                          onPressed: () {
+                            setState(() {
+                              xFile = null;
+                            });
+                          },
+                        ),
                     ],
                   ),
                 ],

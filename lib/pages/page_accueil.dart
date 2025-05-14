@@ -9,7 +9,7 @@ import '../widgets/widget_vide.dart';
 import '../widgets/post_widget.dart';
 
 class PageAccueil extends StatefulWidget {
-  const PageAccueil({super.key, required this.title});
+  const  PageAccueil({super.key, required this.title});
   final String title;
   @override
   State<PageAccueil> createState() => _PageAccueilState();

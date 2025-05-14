@@ -5,36 +5,36 @@ class ServiceAuthentification {
   // Récupère une instance de auth
   final instance = FirebaseAuth.instance;
 
-  // Connecter à Firebase
-  Future<String> signIn({required String email, required String password}) async {
+  Future<User> signIn({required String email, required String password}) async {
     try {
-      await instance.signInWithEmailAndPassword(email: email, password: password);
-      return '';  // Successful sign-in
-    } on FirebaseAuthException catch (e) {
-      return e.message ?? "Erreur lors de la connexion.";
+      UserCredential userCredential = await instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // Return the authenticated User object
+      return userCredential.user!;
+    } on FirebaseAuthException {
+      // Re-throw specific FirebaseAuthExceptions
+      rethrow;
     } catch (e) {
-      return "Erreur inattendue : $e";
+      // Wrap other unexpected errors in a more informative Exception
+      throw Exception("Erreur inattendue lors de la connexion : $e");
     }
   }
 
   // Créer un compte sur Firebase
-  Future<String> createAccount({
+  Future<User> createAccount({
     required String email,
     required String password,
     required String surname,
     required String name,
   }) async {
-    String result = "";
-
     try {
-      UserCredential userCredential = await instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      UserCredential userCredential = await instance
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       String uid = userCredential.user!.uid;
 
-      // Appel à Firestore pour ajouter un membre
       ServiceFirestore().addMember(
         id: uid,
         data: {
@@ -46,15 +46,17 @@ class ServiceAuthentification {
           'coverPicture': '',
         },
       );
-    } on FirebaseAuthException catch (e) {
-      result = e.message ?? "Erreur lors de la création du compte.";
+
+      // Return the created User object
+      return userCredential.user!;
+    } on FirebaseAuthException {
+      // Re-throw specific FirebaseAuthExceptions (e.g., weak-password, email-already-in-use)
+      rethrow;
     } catch (e) {
-      result = "Erreur inattendue : $e";
+      // Wrap other unexpected errors
+      throw Exception("Erreur inattendue lors de la création du compte : $e");
     }
-
-    return result;
   }
-
 
   // Déconnecter de Firebase
   Future<bool> signOut() async {
