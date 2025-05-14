@@ -10,21 +10,41 @@ class BoutonCamera extends StatelessWidget {
 
   const BoutonCamera({super.key, required this.type, required this.id});
 
-  Future<void> _takePicture(ImageSource source, String type) async {
+  Future<void> _takePicture(BuildContext context, ImageSource source, String type) async {
     final XFile? xFile = await ImagePicker().pickImage(
       source: source,
       maxWidth: 500,
     );
+
     if (xFile == null) return;
 
     final File file = File(xFile.path);
 
-    ServiceFirestore().updateImage(
-      file: file,
-      folder: memberCollectionKey,
-      memberId: id,
-      imageName: type,
-    );
+    try {
+      ServiceFirestore().updateImage(
+        file: file,
+        folder: memberCollectionKey,
+        memberId: id,
+        imageName: type,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Image uploaded successfully! You may need to wait a bit to see the modification.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+    } catch (e) {
+      print('Error uploading image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to upload image: ${e.toString()}'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
   @override
@@ -32,7 +52,7 @@ class BoutonCamera extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.camera_alt),
       onPressed: () {
-        _takePicture(ImageSource.gallery, type); // Ou ImageSource.camera si tu veux
+        _takePicture(context, ImageSource.gallery, type);
       },
     );
   }
