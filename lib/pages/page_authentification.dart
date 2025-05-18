@@ -22,11 +22,6 @@ class _PageAuthentificationState extends State<PageAuthentification> {
   final ServiceAuthentification authService = ServiceAuthentification();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     mailController.dispose();
     passwordController.dispose();
@@ -49,30 +44,19 @@ class _PageAuthentificationState extends State<PageAuthentification> {
 
   Future<void> _handleAuth() async {
     if (_isLoading) return;
-    
+
     if (mailController.text.trim().isEmpty || passwordController.text.trim().isEmpty) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please enter email and password.')),
-        );
-      }
+      _showSnackBar('Veuillez entrer votre email et mot de passe.');
       return;
     }
 
-    if (!accountExists) {
-      if (surnameController.text.trim().isEmpty || nameController.text.trim().isEmpty) {
-        if (mounted) { // Check if widget is still mounted before showing SnackBar
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please enter your first name and last name.')),
-          );
-        }
-        return;
-      }
+    if (!accountExists &&
+        (surnameController.text.trim().isEmpty || nameController.text.trim().isEmpty)) {
+      _showSnackBar('Veuillez entrer votre prénom et nom.');
+      return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     try {
       if (accountExists) {
@@ -89,126 +73,198 @@ class _PageAuthentificationState extends State<PageAuthentification> {
         );
       }
 
-    if (mounted) {
+      if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const PageNavigation()),
         );
       }
-
     } on FirebaseAuthException catch (e) {
-      String errorMessage = "Authentication failed. ${e.message}";
-
-      if (e.code == 'user-not-found') {
-        errorMessage = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password provided.';
-      } else if (e.code == 'email-already-in-use') {
-        errorMessage = 'The account already exists for that email.';
-      } else if (e.code == 'weak-password') {
-        errorMessage = 'The password provided is too weak.';
-      } else if (e.code == 'invalid-email') {
-        errorMessage = 'The email address is invalid.';
-      }
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(errorMessage)),
-        );
-      }
+      String errorMessage = switch (e.code) {
+        'user-not-found' => 'Aucun utilisateur trouvé pour cet email.',
+        'wrong-password' => 'Mot de passe incorrect.',
+        'email-already-in-use' => 'Un compte existe déjà pour cet email.',
+        'weak-password' => 'Le mot de passe fourni est trop faible.',
+        'invalid-email' => 'L\'adresse email est invalide.',
+        _ => "Échec de l'authentification. ${e.message}"
+      };
+      _showSnackBar(errorMessage);
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An unexpected error occurred: ${e.toString()}')),
-        );
-      }
+      _showSnackBar('Une erreur inattendue est survenue : ${e.toString()}');
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      // --- End Stop Loading ---
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
+  void _showSnackBar(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Image.asset('assets/my_icon.png', height: 150),
-              const SizedBox(height: 20),
-              SegmentedButton<bool>(
-                segments: const [
-                  ButtonSegment(value: true, label: Text('Connexion')),
-                  ButtonSegment(value: false, label: Text('Créer un compte')),
-                ],
-                selected: {accountExists},
-                onSelectionChanged: _isLoading ? null : _onSelectedChanged,
-              ),
-              const SizedBox(height: 20),
-              Card(
-                elevation: 4,
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        controller: mailController,
-                        decoration: const InputDecoration(labelText: 'Adresse mail'),
-                        enabled: !_isLoading,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: passwordController,
-                        decoration: const InputDecoration(labelText: 'Mot de passe'),
-                        obscureText: true,
-                        enabled: !_isLoading,
-                        keyboardType: TextInputType.visiblePassword,
-                      ),
-                      if (!accountExists) ...[
-                        const SizedBox(height: 10),
-                        TextField(
-                          controller: surnameController,
-                          decoration: const InputDecoration(labelText: 'Prénom'),
-                          enabled: !_isLoading,
-                          textCapitalization: TextCapitalization.words,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+              'https://t3.ftcdn.net/jpg/01/02/88/40/360_F_102884000_9nDhPvgQwwaNgDWbAwUJVR0puNDOMYhL.jpg',
+            ),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(Colors.black54, BlendMode.darken),
+          ),
+        ),
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Center(
+                          child: Text(
+                            'CHTI FACE BOUC',
+                            style: TextStyle(
+                              fontFamily: 'StarJedi',
+                              fontSize: 40,
+                              color: Colors.yellowAccent,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 4.0,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 10.0,
+                                  color: Colors.blueAccent,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 10),
-                        TextField(
-                          controller: nameController,
-                          decoration: const InputDecoration(labelText: 'Nom'),
-                          enabled: !_isLoading,
-                          textCapitalization: TextCapitalization.words,
+                        const SizedBox(height: 40),
+                        SegmentedButton<bool>(
+                          segments: const [
+                            ButtonSegment(value: true, label: Text('Connexion')),
+                            ButtonSegment(value: false, label: Text('Créer un compte')),
+                          ],
+                          selected: {accountExists},
+                          onSelectionChanged: _isLoading ? null : _onSelectedChanged,
+                          style: SegmentedButton.styleFrom(
+                            selectedBackgroundColor: Colors.yellowAccent.withOpacity(0.3),
+                            selectedForegroundColor: Colors.yellowAccent,
+                            foregroundColor: Colors.blueGrey[200],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Card(
+                          elevation: 8,
+                          color: Colors.blueGrey[900]?.withOpacity(0.7),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              children: [
+                                _buildTextField(
+                                  controller: mailController,
+                                  label: 'Adresse mail',
+                                  icon: Icons.email,
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
+                                const SizedBox(height: 15),
+                                _buildTextField(
+                                  controller: passwordController,
+                                  label: 'Mot de passe',
+                                  icon: Icons.lock,
+                                  obscureText: true,
+                                ),
+                                if (!accountExists) ...[
+                                  const SizedBox(height: 15),
+                                  _buildTextField(
+                                    controller: surnameController,
+                                    label: 'Prénom',
+                                    icon: Icons.person,
+                                    textCapitalization: TextCapitalization.words,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  _buildTextField(
+                                    controller: nameController,
+                                    label: 'Nom',
+                                    icon: Icons.person_outline,
+                                    textCapitalization: TextCapitalization.words,
+                                  ),
+                                ],
+                                const SizedBox(height: 30),
+                                _isLoading
+                                    ? const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.yellowAccent,
+                                  ),
+                                )
+                                    : ElevatedButton(
+                                  onPressed: _handleAuth,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.yellowAccent,
+                                    foregroundColor: Colors.blueGrey[900],
+                                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                                    textStyle: const TextStyle(
+                                        fontSize: 18, fontWeight: FontWeight.bold),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  child: Text(accountExists ? 'Se connecter' : 'Créer un compte'),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
-                      const SizedBox(height: 20),
-                      _isLoading
-                          ? const Center(child: CircularProgressIndicator())
-                          : ElevatedButton(
-                        onPressed: _handleAuth, // Button is only active when not loading
-                        child: Text(accountExists ? 'Se connecter' : 'Créer un compte'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(50),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    TextCapitalization textCapitalization = TextCapitalization.none,
+  }) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.blueGrey[200]),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blueGrey[700]!),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.yellowAccent),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        prefixIcon: Icon(icon, color: Colors.blueGrey[300]),
+      ),
+      style: const TextStyle(color: Colors.white),
+      enabled: !_isLoading,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      textCapitalization: textCapitalization,
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:chti_face_bouc/star_wars_style.dart';
+
 import './pages/page_authentification.dart';
 import './pages/page_navigation.dart';
 
@@ -21,10 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Chti Face bouc',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
-        useMaterial3: true,
-      ),
+      theme: starWarsTheme,
       debugShowCheckedModeBanner: false,
       home: const PageAuthentification(),
     );

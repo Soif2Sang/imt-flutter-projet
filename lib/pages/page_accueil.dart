@@ -1,11 +1,10 @@
-// page_accueil.dart (MODIFIÉ)
+// page_accueil.dart (Thème Star Wars)
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart'; // Pas utilisé directement ici, mais ok de le garder si besoin ailleurs
-import 'package:flutter/material.dart'; // Changé Cupertino en Material pour CircularProgressIndicator, ou garder les deux si besoin.
+import 'package:flutter/material.dart';
 
 import '../modeles/post.dart';
 import '../services_firebase/service_firestore.dart';
-import '../widgets/widget_vide.dart'; // Assurez-vous que ce widget est amélioré (voir suggestion plus bas)
+import '../widgets/widget_vide.dart'; // Assurez-vous que ce widget est adapté au thème sombre
 import '../widgets/widget_post.dart';
 
 class PageAccueil extends StatefulWidget {
@@ -18,17 +17,28 @@ class PageAccueil extends StatefulWidget {
 class _PageAccueilState extends State<PageAccueil> {
   @override
   Widget build(BuildContext context) {
+    // Accède au thème actuel
+    final theme = Theme.of(context);
+
     return Scaffold(
+      // Le fond du Scaffold utilisera la couleur 'background' du thème
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          // Utilise la couleur 'surface' ou 'darkBackgroundColor' du thème pour l'AppBar
+          // 'inversePrimary' peut ne pas correspondre au thème Star Wars
+          backgroundColor: theme.colorScheme.surface, // Ou theme.colorScheme.background si tu préfères
           title: Text(widget.title),
+          // Le style du titre est géré par appBarTheme dans star_wars_theme.dart
+          // La couleur des icônes (comme le bouton de retour si présent) est gérée par appBarTheme
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: ServiceFirestore().allPosts(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                // L'indicateur de chargement utilisera la couleur 'primary' du thème
+                child: CircularProgressIndicator(
+                  color: theme.colorScheme.primary,
+                ),
               );
             }
 
@@ -40,7 +50,8 @@ class _PageAccueilState extends State<PageAccueil> {
                   child: Text(
                     "Une erreur s'est produite lors du chargement des posts. Veuillez réessayer plus tard.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.red[700], fontSize: 16),
+                    // Utilise la couleur 'error' du thème pour les messages d'erreur
+                    style: TextStyle(color: theme.colorScheme.error, fontSize: 16),
                   ),
                 ),
               );
@@ -50,12 +61,12 @@ class _PageAccueilState extends State<PageAccueil> {
               final docs = snapshot.data!.docs;
 
               if (docs.isEmpty) {
+                // Assure-toi que EmptyBody est adapté au thème sombre
                 return const EmptyBody();
               }
 
               return ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
-
                 itemCount: docs.length,
                 itemBuilder: (context, index) {
                   final doc = docs[index];
@@ -66,6 +77,7 @@ class _PageAccueilState extends State<PageAccueil> {
                   );
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
+                    // WidgetPost devrait également s'adapter au thème via le CardTheme et TextTheme
                     child: WidgetPost(post: post),
                   );
                 },
