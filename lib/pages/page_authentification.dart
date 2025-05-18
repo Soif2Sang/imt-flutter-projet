@@ -118,7 +118,7 @@ class _PageAuthentificationState extends State<PageAuthentification> {
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return SingleChildScrollView(
+              return Container(
                 padding: const EdgeInsets.all(24.0),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
