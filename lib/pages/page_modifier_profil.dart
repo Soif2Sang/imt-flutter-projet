@@ -121,19 +121,32 @@ class _ModifierProfilState extends State<ModifierProfil> {
               controller: surnameController,
               decoration: const InputDecoration(labelText: 'Prénom'),
             ),
+
+            // Ajout d'un espace entre les champs de texte
+            const SizedBox(height: 16), // Ajustez la hauteur selon vos besoins
+
             TextField(
               controller: nameController,
               decoration: const InputDecoration(labelText: 'Nom'),
             ),
+
+            // Ajout d'un espace entre les champs de texte
+            const SizedBox(height: 16), // Ajustez la hauteur selon vos besoins
+
             TextField(
               controller: descriptionController,
               decoration: const InputDecoration(labelText: 'Description'),
               maxLines: 3,
             ),
-            const SizedBox(height: 20),
+
+            const SizedBox(height: 24),
+
             ElevatedButton(
               onPressed: _onLogout,
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red[200]),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.error, // Couleur d'erreur pour le bouton de déconnexion
+                foregroundColor: Theme.of(context).colorScheme.onError, // Couleur du texte sur la couleur d'erreur
+              ),
               child: const Text('Se déconnecter'),
             ),
           ],

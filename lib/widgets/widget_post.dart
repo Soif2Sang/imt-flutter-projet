@@ -1,3 +1,4 @@
+import 'package:chti_face_bouc/widgets/widget_member_header.dart';
 import 'package:flutter/material.dart';
 import '../modeles/post.dart';
 import '../pages/page_detail_post_page.dart';
@@ -21,7 +22,7 @@ class WidgetPost extends StatelessWidget {
       clipBehavior: Clip.antiAlias, // Helps InkWell ripple conform to Card shape
       child: Column( // Changed outer Container to Column for direct children management
         children: [
-          // Padding added around the content if needed, or keep it in ContenuPost
+          // Padding added around the content if needed, or keep it in ContenuPostivider height 1 is often visually better
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 0), // Adjust padding as needed
             child: ContenuPost(post: post),

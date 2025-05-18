@@ -1,3 +1,4 @@
+import 'package:chti_face_bouc/widgets/widget_member_header.dart';
 import 'package:flutter/material.dart';
 import '../modeles/post.dart';
 import '../modeles/formatage_date.dart';
@@ -13,6 +14,11 @@ class ContenuPost extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        MemberHeader(
+          memberId: post.member,
+          date: post.date,
+        ),
+        const SizedBox(height: 8),
         if (post.text.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
@@ -82,13 +88,13 @@ class ContenuPost extends StatelessWidget {
               ),
             ),
           ),
-        Align(
+/*        Align(
           alignment: Alignment.bottomRight,
           child: Text(
             FormatageDate().formatted(post.date),
             style: Theme.of(context).textTheme.labelSmall,
           ),
-        ),
+        ),*/
       ],
     );
   }
