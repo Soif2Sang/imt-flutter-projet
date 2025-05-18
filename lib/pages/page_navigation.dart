@@ -1,16 +1,16 @@
-import 'page_notification.dart';
+import 'package:chti_face_bouc/pages/page_authentification.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'page_notification.dart';
 import 'page_accueil.dart';
 import 'page_ecrire_post.dart';
 import 'page_membre.dart';
 import 'page_profil.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-
 import '../modeles/membre.dart';
 import '../services_firebase/service_authentification.dart';
 import '../services_firebase/service_firestore.dart';
-import '../widgets/widget_vide.dart';
+import '../widgets/widget_vide.dart'; // Assuming EmptyScaffold is in this file
 
 class PageNavigation extends StatefulWidget {
   const PageNavigation({super.key});
@@ -22,12 +22,41 @@ class PageNavigation extends StatefulWidget {
 class _PageNavigationState extends State<PageNavigation> {
   int index = 0;
 
+  // Logout logic copied from ModifierProfil
+  void _onLogout() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Déconnexion'),
+        content: const Text('Voulez-vous vous déconnecter ?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Non'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Oui'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      await ServiceAuthentification().signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PageAuthentification()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final memberId = ServiceAuthentification().myId;
 
     if (memberId == null) {
-      return const EmptyScaffold();
+      return const EmptyScaffold(); // Ensure EmptyScaffold is defined or imported
     }
 
     return StreamBuilder<DocumentSnapshot>(
@@ -52,6 +81,15 @@ class _PageNavigationState extends State<PageNavigation> {
           return Scaffold(
             appBar: AppBar(
               title: Text(member.fullName),
+              actions: <Widget>[
+                IconButton(
+                icon: const Icon(Icons.logout),
+                tooltip: 'Logout',
+                onPressed: () {
+                  _onLogout();
+                },
+              ),
+            ]
             ),
             bottomNavigationBar: NavigationBar(
               labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,

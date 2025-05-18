@@ -16,7 +16,7 @@ class WidgetPost extends StatelessWidget {
     final bool isLiked = myId != null && post.likes.contains(myId);
 
     return Card(
-      elevation: 8,
+      elevation: 1,
       // Using ClipRRect to ensure InkWell ripple effect is contained within the card's rounded corners if any
       clipBehavior: Clip.antiAlias, // Helps InkWell ripple conform to Card shape
       child: Column( // Changed outer Container to Column for direct children management

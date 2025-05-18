@@ -44,7 +44,8 @@ class MemberHeader extends StatelessWidget {
             children: [
               CircleAvatar(
                 // Consider setting radius or min/maxRadius if needed
-                child: Text(member.fullName.isNotEmpty ? member.fullName[0] : '?'), // Safer handling for empty names
+                child: CircleAvatar(child: Icon(Icons.person_off_outlined)),
+                backgroundImage: member.profilePicture.isNotEmpty ? NetworkImage(member.profilePicture) : null,
               ),
               const SizedBox(width: 8), // Add some spacing between avatar and text
               Column(

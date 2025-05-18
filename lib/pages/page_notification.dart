@@ -20,7 +20,10 @@ class _PageNotifState extends State<PageNotif> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Notifications")),
+      appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text("Notifications")
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: ServiceFirestore().notificationForUser(widget.member.id),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

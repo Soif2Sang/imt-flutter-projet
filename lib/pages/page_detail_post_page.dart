@@ -37,6 +37,7 @@ class _PageDetailPostState extends State<PageDetailPost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Commentaires'),
       ),
       body: SingleChildScrollView(
