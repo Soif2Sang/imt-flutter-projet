@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../modeles/post.dart';
 import '../services_firebase/service_firestore.dart';
 import '../widgets/widget_vide.dart';
-import '../widgets/post_widget.dart';
+import '../widgets/widget_post.dart';
 
 class PageAccueil extends StatefulWidget {
   const  PageAccueil({super.key, required this.title});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../modeles/post.dart';
 import '../services_firebase/service_firestore.dart';
-import '../widgets/liste_commentaire.dart';
-import '../widgets/post_widget.dart';
+import '../widgets/widget_liste_commentaire.dart';
+import '../widgets/widget_post.dart';
 
 class PageDetailPost extends StatefulWidget {
   final Post post;

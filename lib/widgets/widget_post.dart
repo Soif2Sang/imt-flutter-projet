@@ -3,7 +3,7 @@ import '../modeles/post.dart';
 import '../pages/page_detail_post_page.dart';
 import '../services_firebase/service_authentification.dart';
 import '../services_firebase/service_firestore.dart';
-import 'contenu_post.dart';
+import 'widget_contenu_post.dart';
 class WidgetPost extends StatelessWidget {
   final Post post;
   const WidgetPost({super.key, required this.post});

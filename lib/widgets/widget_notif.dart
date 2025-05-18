@@ -4,7 +4,7 @@ import '../modeles/notification.dart';
 import '../modeles/post.dart';
 import '../services_firebase/service_firestore.dart';
 import '../pages/page_detail_post_page.dart';
-import 'member_header.dart';
+import 'widget_member_header.dart';
 
 class Notif extends StatelessWidget {
   final NotificationCFB notif;

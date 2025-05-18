@@ -7,12 +7,12 @@ import '../services_firebase/service_firestore.dart';
 
 class PageEcrirePost extends StatefulWidget {
   final Membre member;
-  final void Function(int) newSelection;
+  final void Function(int) newDestination;
 
   const PageEcrirePost({
     super.key,
     required this.member,
-    required this.newSelection,
+    required this.newDestination,
   });
 
   @override
@@ -56,7 +56,15 @@ class _PageEcrirePostState extends State<PageEcrirePost> {
       xFile = null;
     });
 
-    widget.newSelection(0); // Redirige vers la page Accueil
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Post created successfully! You may need to wait a bit to see the modification.'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 3),
+      ),
+    );
+
+    widget.newDestination(0); // Redirige vers la page Accueil
   }
 
   @override

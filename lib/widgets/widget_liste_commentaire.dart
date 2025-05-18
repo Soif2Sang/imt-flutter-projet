@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'member_header.dart'; // Ensure correct path
+import 'widget_member_header.dart'; // Ensure correct path
 import '../modeles/post.dart';
 import '../modeles/commentaire.dart';
 // import '../modeles/formatage_date.dart'; // No longer needed here directly

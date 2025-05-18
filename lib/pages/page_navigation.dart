@@ -44,7 +44,7 @@ class _PageNavigationState extends State<PageNavigation> {
           List<Widget> bodies = [
             Center(child: PageAccueil(title: 'Accueil')),
             Center(child: PageMembres()),
-            Center(child: PageEcrirePost(member: member, newSelection: (val) => setState(() => index = val))),
+            Center(child: PageEcrirePost(member: member, newDestination: (val) => setState(() => index = val))),
             Center(child: PageNotif(member: member)),
             Center(child: PageProfil(member: member)),
           ];

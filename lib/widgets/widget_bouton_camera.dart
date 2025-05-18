@@ -29,9 +29,10 @@ class BoutonCamera extends StatelessWidget {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Image uploaded successfully! You may need to wait a bit to see the modification.'),
-          duration: Duration(seconds: 2),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 3),
         ),
       );
 
@@ -39,7 +40,7 @@ class BoutonCamera extends StatelessWidget {
       print('Error uploading image: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to upload image: ${e.toString()}'),
+          content: Text('Failed to upload image: ${e.toString()}.'),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 3),
         ),

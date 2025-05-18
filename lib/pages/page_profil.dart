@@ -5,9 +5,9 @@ import '../services_firebase/service_authentification.dart';
 import '../services_firebase/service_firestore.dart';
 import '../modeles/membre.dart';
 import '../modeles/post.dart';
-import '../widgets/post_widget.dart';
-import '../widgets/avatar.dart';
-import '../widgets/bouton_camera.dart';
+import '../widgets/widget_post.dart';
+import '../widgets/widget_avatar.dart';
+import '../widgets/widget_bouton_camera.dart';
 import 'page_modifier_profil.dart';
 
 class PageProfil extends StatefulWidget {
