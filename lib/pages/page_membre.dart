@@ -18,7 +18,7 @@ class _PageMembresState extends State<PageMembres> {
     // Wrap the content in a Scaffold to add an AppBar
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text('Liste des Membres'), // Added AppBar title
       ),
       body: StreamBuilder<QuerySnapshot>(

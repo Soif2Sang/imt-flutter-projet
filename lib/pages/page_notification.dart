@@ -21,7 +21,7 @@ class _PageNotifState extends State<PageNotif> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           title: const Text("Notifications")
       ),
       body: StreamBuilder<QuerySnapshot>(

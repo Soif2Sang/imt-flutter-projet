@@ -43,9 +43,14 @@ class MemberHeader extends StatelessWidget {
             mainAxisSize: MainAxisSize.min, // Crucial: Row takes minimum space needed
             children: [
               CircleAvatar(
-                // Consider setting radius or min/maxRadius if needed
-                child: CircleAvatar(child: Icon(Icons.person_off_outlined)),
-                backgroundImage: member.profilePicture.isNotEmpty ? NetworkImage(member.profilePicture) : null,
+                radius: 24, // Optional: customize size
+                backgroundImage: member.profilePicture.isNotEmpty
+                    ? NetworkImage(member.profilePicture)
+                    : null,
+                backgroundColor: Colors.grey.shade800, // fallback background
+                child: member.profilePicture.isEmpty
+                    ? const Icon(Icons.person_off_outlined, color: Colors.white)
+                    : null,
               ),
               const SizedBox(width: 8), // Add some spacing between avatar and text
               Column(

@@ -81,7 +81,7 @@ class _PageEcrirePostState extends State<PageEcrirePost> {
     // Wrap the content in a Scaffold to add an AppBar
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text('Créer un Post'), // Added AppBar title
       ),
       body: SingleChildScrollView(
